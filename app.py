@@ -137,6 +137,16 @@ def test_key():
     return {
         "api_key_loaded": bool(os.getenv("SMS_API_KEY"))
     }
+
+@app.route("/test_taifa")
+def test_taifa():
+    import os
+
+    return {
+        "api_key_loaded": bool(os.getenv("TAIFA_API_KEY")),
+        "sender_name_loaded": bool(os.getenv("TAIFA_SENDER_NAME")),
+        "sender_name": os.getenv("TAIFA_SENDER_NAME")
+    }
 # =========================
 # LOCAL DEVELOPMENT ONLY
 # =========================
