@@ -130,7 +130,13 @@ def send_sms_route():
         "results": results
     })
 
+@app.route("/test_key")
+def test_key():
+    import os
 
+    return {
+        "api_key_loaded": bool(os.getenv("SMS_API_KEY"))
+    }
 # =========================
 # LOCAL DEVELOPMENT ONLY
 # =========================
