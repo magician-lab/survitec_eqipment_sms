@@ -79,23 +79,21 @@
 <script>
 function sendSMS() {
 
-    console.log("🔥 FUNCTION RUNNING");
+    const numbersRaw = document.getElementById("numbers").value;
+    const message = document.getElementById("message").value;
 
-    let numbersRaw = document.getElementById("numbers").value;
-    let message = document.getElementById("message").value;
-
-    let numbers = numbersRaw
+    const numbers = numbersRaw
         .split(",")
         .map(n => n.trim())
         .filter(n => n.length > 0);
 
-    console.log("Numbers:", numbers);
-    console.log("Message:", message);
+    document.getElementById("result").innerText = "Sending...";
 
-    fetch("http://127.0.0.1:5050/send_sms", {
+    fetch("/api/send_sms", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "X-API-KEY": "YOUR_SECRET_API_KEY"
         },
         body: JSON.stringify({
             numbers: numbers,
@@ -104,27 +102,46 @@ function sendSMS() {
     })
     .then(async res => {
 
-        let data = await res.json();
+        const text = await res.text();
 
-        console.log("RESPONSE:", data);
+        console.log("STATUS:", res.status);
+        console.log("RAW RESPONSE:", text);
 
-        let tbody = document.querySelector("#resultsTable tbody");
+        let data;
+
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            document.getElementById("result").innerText =
+                "Server returned HTML instead of JSON:\n\n" + text;
+            return;
+        }
+
+        document.getElementById("result").innerText =
+            JSON.stringify(data, null, 2);
+
+        const tbody = document.querySelector("#resultsTable tbody");
         tbody.innerHTML = "";
 
-        data.results.forEach(item => {
+        if (data.results) {
 
-            let row = document.createElement("tr");
+            data.results.forEach(item => {
 
-            row.innerHTML = `
-                <td>${item.number}</td>
-                <td>${item.status}</td>
-                <td>${JSON.stringify(item.response || item.error)}</td>
-            `;
+                const row = document.createElement("tr");
 
-            tbody.appendChild(row);
-        });
+                row.innerHTML = `
+                    <td>${item.number}</td>
+                    <td>${item.status}</td>
+                    <td>${JSON.stringify(item.response || item.error)}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+        }
     })
     .catch(err => {
+
         console.error(err);
 
         document.getElementById("result").innerText =
