@@ -130,6 +130,20 @@ def send_sms_route():
         "results": results
     })
 
+@app.route("/api/odoo_debug", methods=["POST"])
+def odoo_debug():
+
+    data = request.get_json(silent=True)
+
+    print("\n==========================")
+    print("ODOO WEBHOOK RECEIVED")
+    print(data)
+    print("==========================\n")
+
+    return {
+        "success": True
+    }
+
 @app.route("/api/odoo_sales_order", methods=["POST"])
 def odoo_sales_order():
 
