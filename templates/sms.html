@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SMS BULK SENDER</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+            background: #f8f9fa;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        textarea {
+            width: 450px;
+            height: 120px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 12px 25px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            background: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📩 Bulk SMS Sender</h2>
+
+<label>Phone Numbers (comma separated)</label><br>
+<textarea id="numbers" placeholder="2547xxxxxxx,2547xxxxxxx"></textarea>
+
+<br>
+
+<label>Message</label><br>
+<textarea id="message" placeholder="Type your message here"></textarea>
+
+<br>
+
+<button onclick="sendSMS()">Send SMS</button>
+
+<div id="result"></div>
+<table id="resultsTable" border="1" style="margin-top:20px; width:100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Number</th>
+            <th>Status</th>
+            <th>Response</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+function sendSMS() {
+
+    console.log("🔥 FUNCTION RUNNING");
+
+    let numbersRaw = document.getElementById("numbers").value;
+    let message = document.getElementById("message").value;
+
+    let numbers = numbersRaw
+        .split(",")
+        .map(n => n.trim())
+        .filter(n => n.length > 0);
+
+    console.log("Numbers:", numbers);
+    console.log("Message:", message);
+
+    fetch("http://127.0.0.1:5050/send_sms", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            numbers: numbers,
+            message: message
+        })
+    })
+    .then(async res => {
+
+        let data = await res.json();
+
+        console.log("RESPONSE:", data);
+
+        let tbody = document.querySelector("#resultsTable tbody");
+        tbody.innerHTML = "";
+
+        data.results.forEach(item => {
+
+            let row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${item.number}</td>
+                <td>${item.status}</td>
+                <td>${JSON.stringify(item.response || item.error)}</td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    })
+    .catch(err => {
+        console.error(err);
+
+        document.getElementById("result").innerText =
+            "ERROR: " + err;
+    });
+}
+</script>
+
+</body>
+</html>
