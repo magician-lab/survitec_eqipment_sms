@@ -130,6 +130,24 @@ def send_sms_route():
         "results": results
     })
 
+@app.route("/api/odoo_sales_order", methods=["POST"])
+def odoo_sales_order():
+
+    data = request.get_json()
+
+    customer = data.get("customer_name")
+    phone = data.get("mobile")
+    order = data.get("order_number")
+
+    message = (
+        f"Dear {customer}, "
+        f"your Sales Order {order} has been confirmed."
+    )
+
+    response = send_sms(phone, message)
+
+    return jsonify(response)
+
 @app.route("/test_key")
 def test_key():
     import os
