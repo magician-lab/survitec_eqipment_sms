@@ -69,20 +69,21 @@ def send_sms_route():
             "error": "Invalid or missing JSON"
         }), 400
 
-    numbers = data.get("numbers", [])
-    message = data.get("message", "")
-
-    if not numbers:
+    phone = data.get("phone")
+    
+    if not phone:
         return jsonify({
             "success": False,
-            "error": "Missing numbers"
+            "error": "Missing phone number"
         }), 400
-
-    if not message:
-        return jsonify({
-            "success": False,
-            "error": "Missing message"
-        }), 400
+    
+    numbers = [phone]
+    name = data.get("name", "Customer")
+    
+    message = (
+        f"Hello {name}, thank you for choosing Survitec Equipment Ltd. "
+        "We appreciate your business."
+    )
 
     logging.info(
         f"Sending SMS to {len(numbers)} recipient(s)"
