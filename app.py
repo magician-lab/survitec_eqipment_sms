@@ -47,16 +47,16 @@ def send_sms_route():
     # -------------------------
     # API KEY VALIDATION
     # -------------------------
-    supplied_key = request.headers.get("X-API-KEY")
+    # supplied_key = request.headers.get("X-API-KEY")
 
-    if API_KEY:
-        if supplied_key != API_KEY:
-            logging.warning("Unauthorized request")
+    # if API_KEY:
+    #     if supplied_key != API_KEY:
+    #         logging.warning("Unauthorized request")
 
-            return jsonify({
-                "success": False,
-                "error": "Unauthorized"
-            }), 401
+    #         return jsonify({
+    #             "success": False,
+    #             "error": "Unauthorized"
+    #         }), 401
 
     # -------------------------
     # JSON VALIDATION
