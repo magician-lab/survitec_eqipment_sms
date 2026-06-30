@@ -82,7 +82,7 @@ def send_sms_route():
     
     message = (
         f"Hello {name}, thank you for choosing Survitec Equipment Ltd. "
-        "We appreciate your trust annd remain commited to quality products and reliable services."
+        "We appreciate your trust and remain commited to quality products and reliable services."
     )
 
     logging.info(
