@@ -81,8 +81,8 @@ def send_sms_route():
     name = data.get("name", "Customer")
     
     message = (
-        f"Hello {name}! New stock of 3D printers and varuous filament just landed." 
-        "Visit us today before they’re gone!  [Kampala Business center, Nairobi CBD ]"
+        f"Hello {name}! New stock of 3D printers and various filament just landed." 
+        "Visit us today before they’re gone!  [Kampala Business Center, Nairobi CBD ]"
     )
 
     logging.info(
