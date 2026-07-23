@@ -81,9 +81,12 @@ def send_sms_route():
     name = data.get("name", "Customer")
     
     message = (
-        f"Hello {name}! kindly we are requesting you to give us reviews on gooogle via https://g.page/r/CWK25xX_1C1CEAE/review"
-        "                  We appreciate doing business with you"
+        f"Hello {name}, "
+        "Kindly we are requesting you to give us reviews on google via:\n"
+        "https://g.page/r/CWK25xX_1C1CEAE/review\n"
+        "We truly appreciate your support!"
     )
+    
 
     logging.info(
         f"Sending SMS to {len(numbers)} recipient(s)"
