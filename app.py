@@ -82,7 +82,7 @@ def send_sms_route():
     
     message = (
         f"Hello {name}! kindly we are requesting you to give us reviews on gooogle via https://g.page/r/CWK25xX_1C1CEAE/review"
-        "We appreciate doing business with you"
+        "                  We appreciate doing business with you"
     )
 
     logging.info(
